@@ -13,8 +13,16 @@
     <label for="decode">Decode:</label>
     <br />
     <textarea id="decode" rows="15" cols="40"></textarea>
+    <br />
+    <button onclick="copyToClipboard()">Copy</button>
 
     <script>
+        function copyToClipboard() {
+            var copyText = document.getElementById("decode");
+            copyText.select();
+            document.execCommand("copy");
+        }
+
         const encode = document.getElementById("encode");
         const decode = document.getElementById("decode");
 
