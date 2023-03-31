@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Encode/Decode Text</title>
+</head>
+
+<body>
+    <label for="encode">Encode:</label>
+    <br />
+    <textarea id="encode" rows="5" cols="50"></textarea>
+    <br />
+    <label for="decode">Decode:</label>
+    <br />
+    <textarea id="decode" rows="5" cols="50"></textarea>
+
+    <script>
+        const encode = document.getElementById("encode");
+        const decode = document.getElementById("decode");
+
+        encode.addEventListener("input", () => {
+            decode.value = window.btoa(encode.value);
+        });
+
+        decode.addEventListener("input", () => {
+            encode.value = window.atob(decode.value);
+        });
+    </script>
+</body>
+
+</html>
