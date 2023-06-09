@@ -1,39 +1,63 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Encode/Decode Text</title>
+  <title>Encode/Decode Text</title>
 </head>
-
 <body>
-    <label for="encode">Encode:</label>
-    <br />
-    <textarea id="encode" rows="15" cols="45"></textarea>
-    <br />
-    <label for="decode">Decode:</label>
-    <br />
-    <textarea id="decode" rows="15" cols="45"></textarea>
-    <br />
-    <button onclick="copyToClipboard()">Copy</button>
+  <label for="encode">Encode:</label>
+  <br />
+  <textarea id="encode" rows="15" cols="45"></textarea>
+  <br />
+  <label for="decode">Decode:</label>
+  <br />
+  <textarea id="decode" rows="15" cols="45"></textarea>
+  <br />
+  <label for="base">Select base:</label>
+  <select id="base">
+    <option value="64">Base64</option>
+    <option value="16">Base16</option>
+  </select>
+  <br />
+  <button onclick="copyToClipboard()">Copy</button>
+  <script>
+    function copyToClipboard() {
+      var copyText = document.getElementById("decode");
+      copyText.select();
+      document.execCommand("copy");
+    }
 
-    <script>
-        function copyToClipboard() {
-            var copyText = document.getElementById("decode");
-            copyText.select();
-            document.execCommand("copy");
-        }
+    const encode = document.getElementById("encode");
+    const decode = document.getElementById("decode");
+    const base = document.getElementById("base");
 
-        const encode = document.getElementById("encode");
-        const decode = document.getElementById("decode");
+    function encodeText() {
+      if (base.value === "64") {
+        decode.value = window.btoa(encode.value);
+      } else if (base.value === "16") {
+        decode.value = encode.value
+          .split("")
+          .map((c) => c.charCodeAt(0).toString(16))
+          .join("");
+      }
+    }
 
-        encode.addEventListener("input", () => {
-            decode.value = window.btoa(encode.value);
-        });
+    function decodeText() {
+      if (base.value === "64") {
+        encode.value = window.atob(decode.value);
+      } else if (base.value === "16") {
+        encode.value = decode.value
+          .match(/.{1,2}/g)
+          .map((c) => String.fromCharCode(parseInt(c, 16)))
+          .join("");
+      }
+    }
 
-        decode.addEventListener("input", () => {
-            encode.value = window.atob(decode.value);
-        });
-    </script>
+    encode.addEventListener("input", encodeText);
+    decode.addEventListener("input", decodeText);
+    base.addEventListener("change", () => {
+      encodeText();
+      decodeText();
+    });
+  </script>
 </body>
-
 </html>
